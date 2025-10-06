@@ -19,6 +19,94 @@
             overflow-x: hidden;
         }
 
+        /* LOADING SCREEN */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ff6b9d 0%, #c06c84 50%, #6c5b7b 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loading-heart {
+            font-size: 100px;
+            animation: loadingPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes loadingPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        .loading-text {
+            color: white;
+            font-size: 1.8em;
+            margin-top: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .loading-dots {
+            color: white;
+            font-size: 2em;
+            margin-top: 10px;
+        }
+
+        /* COUNTDOWN TIMER */
+        .countdown-section {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeIn 1.5s ease-in;
+        }
+
+        .countdown-title {
+            font-size: 1.8em;
+            color: #c06c84;
+            margin-bottom: 25px;
+        }
+
+        .countdown-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .countdown-item {
+            background: linear-gradient(135deg, #fff6f8 0%, #ffe8ee 100%);
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(255, 107, 157, 0.2);
+        }
+
+        .countdown-number {
+            font-size: 3em;
+            font-weight: bold;
+            color: #ff6b9d;
+            display: block;
+        }
+
+        .countdown-label {
+            font-size: 1em;
+            color: #6c5b7b;
+            margin-top: 5px;
+        }
+
         /* Music Player Styles */
         .music-player {
             position: fixed;
@@ -245,13 +333,46 @@
             margin-top: 10px;
         }
 
+        /* SCROLL ANIMATIONS */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scroll-reveal-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .scroll-reveal-left.revealed {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .scroll-reveal-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .scroll-reveal-right.revealed {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
         .content-section {
             background: rgba(255, 255, 255, 0.98);
             padding: 50px 40px;
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             margin-bottom: 40px;
-            animation: fadeIn 2s ease-in;
         }
 
         .message {
@@ -289,36 +410,48 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s ease;
             position: relative;
+            overflow: hidden;
         }
 
         .photo-frame:hover {
             transform: translateY(-10px) rotate(2deg);
         }
 
-        .photo-placeholder {
+        /* ENHANCED IMAGE HOVER OVERLAY */
+        .photo-frame img {
             width: 100%;
             height: 300px;
-            background: linear-gradient(135deg, #ff6b9d 0%, #c06c84 100%);
+            object-fit: cover;
             border-radius: 5px;
+            transition: transform 0.3s ease;
+        }
+
+        .photo-overlay {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            bottom: 45px;
+            background: rgba(255, 107, 157, 0.9);
+            border-radius: 5px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 1.1em;
+            font-size: 1.3em;
+            font-weight: bold;
             text-align: center;
             padding: 20px;
-            position: relative;
-            overflow: hidden;
         }
 
-        .photo-placeholder::before {
-            content: '📷';
-            font-size: 50px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            opacity: 0.3;
+        .photo-frame:hover .photo-overlay {
+            opacity: 1;
+        }
+
+        .photo-frame:hover img {
+            transform: scale(1.05);
         }
 
         .photo-caption {
@@ -327,33 +460,6 @@
             font-size: 0.95em;
             color: #666;
             font-style: italic;
-        }
-
-        .timeline {
-            margin: 40px 0;
-        }
-
-        .timeline-item {
-            display: flex;
-            margin-bottom: 30px;
-            position: relative;
-        }
-
-        .timeline-marker {
-            width: 30px;
-            height: 30px;
-            background: #ff6b9d;
-            border-radius: 50%;
-            margin-right: 20px;
-            flex-shrink: 0;
-            box-shadow: 0 0 0 5px rgba(255, 107, 157, 0.2);
-        }
-
-        .timeline-content {
-            background: #fff6f8;
-            padding: 20px;
-            border-radius: 10px;
-            flex-grow: 1;
         }
 
         .section-title {
@@ -488,6 +594,18 @@
             input[type="range"] {
                 width: 60px;
             }
+
+            .countdown-container {
+                gap: 15px;
+            }
+
+            .countdown-item {
+                padding: 15px 20px;
+            }
+
+            .countdown-number {
+                font-size: 2em;
+            }
         }
 
         .emphasis {
@@ -497,19 +615,30 @@
     </style>
 </head>
 <body>
+    <!-- LOADING SCREEN -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-heart">💖</div>
+        <div class="loading-text">Loading Our Memories</div>
+        <div class="loading-dots">
+            <span class="dot">.</span>
+            <span class="dot">.</span>
+            <span class="dot">.</span>
+        </div>
+    </div>
+
     <!-- Welcome Overlay -->
-    <div class="welcome-overlay" id="welcomeOverlay">
+    <div class="welcome-overlay" id="welcomeOverlay" style="display: none;">
         <div class="welcome-box">
             <div class="heart" style="font-size: 60px;">💕</div>
-            <h2>Welcome Love 💖</h2>
-            <p>I made something special for you.<br></p>
+            <h2>Welcome Charms 💖</h2>
+            <p>I made something special for you.<br>Click below to begin with music 🎵</p>
             <button class="start-btn" onclick="startExperience()">Start 💖</button>
         </div>
     </div>
 
     <!-- Background Music -->
     <audio id="bgMusic" loop>
-        <source src="A Song for Heaven.mp3" type="audio/mpeg">
+        <source src="your-song.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
 
@@ -519,7 +648,7 @@
             <span id="playIcon">▶️</span>
         </button>
         <div class="music-info">
-            <div class="music-title">Our Song </div>
+            <div class="music-title">Our Song 🎵</div>
             <div class="music-status" id="musicStatus">Playing...</div>
         </div>
         <div class="volume-control">
@@ -531,104 +660,133 @@
     <div class="floating-hearts" id="hearts"></div>
 
     <div class="container">
-        <div class="header">
+        <div class="header scroll-reveal">
             <div class="heart">💕</div>
             <h1>Happy 20 Months!</h1>
             <div class="subtitle">To My Beautiful Girlfriend Charms</div>
             <div class="date">October 18, 2025</div>
         </div>
 
-        <div class="content-section">
+        <!-- COUNTDOWN TIMER -->
+        <div class="countdown-section scroll-reveal">
+            <div class="countdown-title">We've Been Together For...</div>
+            <div class="countdown-container">
+                <div class="countdown-item">
+                    <span class="countdown-number" id="months">20</span>
+                    <span class="countdown-label">Months</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="days">0</span>
+                    <span class="countdown-label">Days</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="hours">0</span>
+                    <span class="countdown-label">Hours</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="minutes">0</span>
+                    <span class="countdown-label">Minutes</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section scroll-reveal">
             <div class="section-title">My Love Letter to You</div>
 
-            <div class="message">
+            <div class="message scroll-reveal">
                 My dearest love, I can't believe it's been 20 months since you came into my life and changed everything. Twenty months of laughter, tears, growth, and unconditional love. Twenty months of learning what it truly means to be with someone who makes every single day worth living.
             </div>
 
-            <div class="message">
+            <div class="message scroll-reveal">
                 When I think about us, I think about all the little moments that make my heart full. The way you laugh at my terrible jokes, the way you look at me when you think I'm not watching, the sound of your voice when you call my name. Every single detail about you is etched into my heart, and I wouldn't change a single thing.
             </div>
 
-            <div class="message-center">
+            <div class="message-center scroll-reveal">
                 "We're not perfect, but we're perfect for each other"
             </div>
 
-            <div class="message">
+            <div class="message scroll-reveal">
                 I know we're not always easy. <span class="emphasis">We fight, we argue, we frustrate each other</span>—sometimes over the silliest things. There are moments when we both want to walk away, when the words hurt and the silence feels too heavy. But here's what I've learned about us: <span class="emphasis">we always find our way back to each other</span>. Every single time.
             </div>
 
-            <div class="message">
+            <div class="message scroll-reveal">
                 That's what makes us special. We don't run away when things get hard. We don't give up when we're angry. Instead, we talk, we listen, we understand. We put our pride aside because what we have is so much bigger than any argument. You've taught me that real love isn't about never fighting—it's about always choosing each other, even when it's difficult. <span class="emphasis">Especially when it's difficult</span>.
             </div>
 
-            <div class="message">
+            <div class="message scroll-reveal">
                 Every time we fix what's broken between us, we come back stronger. Every misunderstanding becomes a lesson. Every tear becomes a testament to how much we care. You've shown me that love is patient, love is forgiving, and love is worth fighting for. Our love is worth fighting for.
             </div>
         </div>
 
-        <div class="content-section">
+        <div class="content-section scroll-reveal">
             <div class="section-title">Our Beautiful Memories</div>
             <div class="photo-gallery">
-                <div class="photo-frame">
-                    <img src="started.jpg" style="width:100%; height:300px; object-fit:cover; border-radius:5px;">
+                <div class="photo-frame scroll-reveal-left">
+                    <img src="started.jpg">
+                    <div class="photo-overlay">Where it all began ❤️</div>
                     <div class="photo-caption">Where it all began ❤️</div>
                 </div>
 
-                <div class="photo-frame">
-                    <img src="memries.jpg" style="width:100%; height:300px; object-fit:cover; border-radius:5px;">
+                <div class="photo-frame scroll-reveal-right">
+                    <img src="memries.jpg">
+                    <div class="photo-overlay">Making memories with you 💕</div>
                     <div class="photo-caption">Making memories with you 💕</div>
                 </div>
 
-                <div class="photo-frame">
-                    <img src="fav.jpg" style="width:100%; height:300px; object-fit:cover; border-radius:5px;">
+                <div class="photo-frame scroll-reveal-left">
+                    <img src="fav.jpg">
+                    <div class="photo-overlay">Our favorite adventure 🌟</div>
                     <div class="photo-caption">Our favorite adventure 🌟</div>
                 </div>
 
-                <div class="photo-frame">
-                    <img src="mmhap.jpg" style="width:100%; height:300px; object-fit:cover; border-radius:5px;">
+                <div class="photo-frame scroll-reveal-right">
+                    <img src="mmhap.jpg">
+                    <div class="photo-overlay">You make me so happy 😊</div>
                     <div class="photo-caption">You make me so happy 😊</div>
                 </div>
 
-                <div class="photo-frame">
-                    <img src="stillu.jpg" style="width:100%; height:300px; object-fit:cover; border-radius:5px;">
+                <div class="photo-frame scroll-reveal-left">
+                    <img src="stillu.jpg">
+                    <div class="photo-overlay">Still falling for you 💖</div>
                     <div class="photo-caption">Still falling for you 💖</div>
                 </div>
 
-                <div class="photo-frame">
-                    <img src="formy.jpg" style="width:100%; height:300px; object-fit:cover; border-radius:5px;">
+                <div class="photo-frame scroll-reveal-right">
+                    <img src="formy.jpg">
+                    <div class="photo-overlay">Forever my favorite person 💑</div>
                     <div class="photo-caption">Forever my favorite person 💑</div>
                 </div>
             </div>
         </div>
 
-        <div class="content-section">
+        <div class="content-section scroll-reveal">
             <div class="section-title">What You Mean to Me</div>
 
-            <div class="message">
+            <div class="message scroll-reveal">
                 Baby, you are my safe place in a chaotic world. When everything feels overwhelming, when life gets too heavy, I know I can come to you. You're my best friend, my partner, my confidant, my everything. You see me at my worst and still choose to love me at my best. That kind of love is rare, and I cherish it every single day.
             </div>
 
-            <div class="message">
+            <div class="message scroll-reveal">
                 Thank you for being patient with me. Thank you for understanding my flaws and loving me anyway. Thank you for every time you've forgiven me, every time you've held my hand through the hard times, every time you've smiled at me and made everything okay again. Thank you for showing me what real, honest, beautiful love looks like.
             </div>
 
-            <div class="message">
+            <div class="message scroll-reveal">
                 These 20 months have been the best months of my life, and I can't wait for all the months and years to come. I want to experience everything with you—the good days, the challenging days, the ordinary days, and the extraordinary ones. I want to keep growing with you, learning with you, and building a life with you.
             </div>
 
-            <div class="message-center">
+            <div class="message-center scroll-reveal">
                 "In a sea of people, my eyes will always search for you"
             </div>
 
-            <div class="message">
+            <div class="message scroll-reveal">
                 You are my person. You are the one I want to call when something exciting happens. You are the one I want to hug when I'm sad. You are the one I want beside me through every moment. I love you more than words could ever express, and I promise to keep showing you every single day just how much you mean to me.
             </div>
 
-            <div class="message">
+            <div class="message scroll-reveal">
                 Here's to 20 months down and a lifetime to go. Here's to all the fights we'll work through, all the laughs we'll share, all the memories we'll create, and all the love we'll continue to build together. I'm so grateful for you, for us, and for this beautiful journey we're on.
             </div>
 
-            <div class="message">
+            <div class="message scroll-reveal">
                 I love you endlessly, completely, and unconditionally. Thank you for being mine.
             </div>
 
@@ -648,7 +806,7 @@
             </div>
         </div>
 
-        <div class="footer">
+        <div class="footer scroll-reveal">
             <div class="heart" style="font-size: 50px; animation-duration: 1s;">💖</div>
             <div style="margin-top: 20px; font-size: 1.3em;">Forever & Always</div>
             <div style="margin-top: 10px; font-size: 1em;">ILOVEYOUUUUUU</div>
@@ -656,6 +814,61 @@
     </div>
 
     <script>
+        // ===== LOADING SCREEN =====
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('loadingScreen').classList.add('hidden');
+                setTimeout(function() {
+                    document.getElementById('welcomeOverlay').style.display = 'flex';
+                }, 800);
+            }, 2500); // Show loading screen for 2.5 seconds
+        });
+
+        // ===== COUNTDOWN TIMER =====
+        // Set your anniversary start date (February 18, 2024 - 20 months before Oct 18, 2025)
+        const startDate = new Date('2024-02-18T00:00:00');
+
+        function updateCountdown() {
+            const now = new Date();
+            const diff = now - startDate;
+
+            // Calculate time units
+            const totalDays = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const months = Math.floor(totalDays / 30);
+            const days = totalDays % 30;
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+            document.getElementById('months').textContent = months;
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours;
+            document.getElementById('minutes').textContent = minutes;
+        }
+
+        // Update countdown every minute
+        updateCountdown();
+        setInterval(updateCountdown, 60000);
+
+        // ===== SCROLL ANIMATIONS =====
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all scroll reveal elements
+        document.querySelectorAll('.scroll-reveal, .scroll-reveal-left, .scroll-reveal-right').forEach(el => {
+            observer.observe(el);
+        });
+
+        // ===== MUSIC PLAYER =====
         const bgMusic = document.getElementById('bgMusic');
         const playPauseBtn = document.getElementById('playPauseBtn');
         const playIcon = document.getElementById('playIcon');
@@ -663,15 +876,12 @@
         const volumeSlider = document.getElementById('volumeSlider');
         const musicPlayer = document.getElementById('musicPlayer');
 
-        // Set initial volume
         bgMusic.volume = 0.5;
 
-        // Start experience function
         function startExperience() {
             document.getElementById('welcomeOverlay').style.display = 'none';
             musicPlayer.style.display = 'flex';
 
-            // Try to play music
             bgMusic.play().then(() => {
                 playIcon.textContent = '⏸️';
                 musicStatus.textContent = 'Playing...';
@@ -682,7 +892,6 @@
             });
         }
 
-        // Toggle music play/pause
         function toggleMusic() {
             if (bgMusic.paused) {
                 bgMusic.play();
@@ -695,12 +904,11 @@
             }
         }
 
-        // Change volume
         function changeVolume() {
             bgMusic.volume = volumeSlider.value / 100;
         }
 
-        // Create floating hearts
+        // ===== FLOATING HEARTS =====
         function createHeart() {
             const hearts = ['💕', '💖', '💗', '💝', '❤️'];
             const heart = document.createElement('div');
@@ -716,24 +924,18 @@
             }, 15000);
         }
 
-        // Create hearts periodically
         setInterval(createHeart, 1500);
 
-        // Reveal hidden message
         function revealMessage() {
             const message = document.getElementById('hiddenMessage');
             message.style.display = 'block';
-
-            // Scroll smoothly to the message
             message.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-            // Create confetti effect with hearts
             for (let i = 0; i < 30; i++) {
                 setTimeout(createHeart, i * 80);
             }
         }
 
-        // Initialize some hearts
         for (let i = 0; i < 8; i++) {
             setTimeout(createHeart, i * 300);
         }
