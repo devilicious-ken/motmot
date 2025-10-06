@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy 20 Months, My Love ❤️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #ff6b9d 0%, #c06c84 50%, #6c5b7b 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Music Player Styles */
+        .music-player {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .music-player:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .play-pause-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff6b9d 0%, #c06c84 100%);
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .play-pause-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .music-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .music-title {
+            font-size: 0.9em;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .music-status {
+            font-size: 0.75em;
+            color: #888;
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .volume-icon {
+            font-size: 18px;
+        }
+
+        input[type="range"] {
+            width: 80px;
+            height: 5px;
+            border-radius: 5px;
+            background: #ddd;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #ff6b9d;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #ff6b9d;
+            cursor: pointer;
+            border: none;
+        }
+
+        /* Welcome Overlay for Music */
+        .welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .welcome-box {
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 500px;
+            animation: scaleIn 0.5s ease;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .welcome-box h2 {
+            font-size: 2em;
+            color: #c06c84;
+            margin-bottom: 20px;
+        }
+
+        .welcome-box p {
+            font-size: 1.1em;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #ff6b9d 0%, #c06c84 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(255, 107, 157, 0.4);
+            transition: all 0.3s ease;
+            font-family: 'Georgia', serif;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(255, 107, 157, 0.6);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 60px 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeIn 1.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .heart {
+            font-size: 80px;
+            animation: heartbeat 1.5s ease-in-out infinite;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+            10%, 30% {
+                transform: scale(1.1);
+            }
+            20%, 40% {
+                transform: scale(1.05);
+            }
+        }
+
+        h1 {
+            font-size: 2.8em;
+            margin-bottom: 15px;
+            color: #c06c84;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: #6c5b7b;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .date {
+            font-size: 1.1em;
+            color: #888;
+            margin-top: 10px;
+        }
+
+        .content-section {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            margin-bottom: 40px;
+            animation: fadeIn 2s ease-in;
+        }
+
+        .message {
+            font-size: 1.2em;
+            line-height: 2;
+            margin: 25px 0;
+            color: #555;
+            text-align: justify;
+        }
+
+        .message-center {
+            text-align: center;
+            font-size: 1.3em;
+            color: #c06c84;
+            font-weight: bold;
+            font-style: italic;
+            margin: 40px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #fff6f8 0%, #ffe8ee 100%);
+            border-radius: 15px;
+            border-left: 5px solid #ff6b9d;
+        }
+
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .photo-frame {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .photo-frame:hover {
+            transform: translateY(-10px) rotate(2deg);
+        }
+
+        .photo-placeholder {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #ff6b9d 0%, #c06c84 100%);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1em;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .photo-placeholder::before {
+            content: '📷';
+            font-size: 50px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.3;
+        }
+
+        .photo-caption {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.95em;
+            color: #666;
+            font-style: italic;
+        }
+
+        .timeline {
+            margin: 40px 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .timeline-marker {
+            width: 30px;
+            height: 30px;
+            background: #ff6b9d;
+            border-radius: 50%;
+            margin-right: 20px;
+            flex-shrink: 0;
+            box-shadow: 0 0 0 5px rgba(255, 107, 157, 0.2);
+        }
+
+        .timeline-content {
+            background: #fff6f8;
+            padding: 20px;
+            border-radius: 10px;
+            flex-grow: 1;
+        }
+
+        .section-title {
+            font-size: 2em;
+            color: #6c5b7b;
+            margin-bottom: 30px;
+            text-align: center;
+            border-bottom: 3px solid #ff6b9d;
+            padding-bottom: 15px;
+        }
+
+        .button {
+            background: linear-gradient(135deg, #ff6b9d 0%, #c06c84 100%);
+            color: white;
+            padding: 18px 50px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 30px;
+            box-shadow: 0 10px 25px rgba(255, 107, 157, 0.4);
+            transition: all 0.3s ease;
+            font-family: 'Georgia', serif;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(255, 107, 157, 0.6);
+        }
+
+        .hidden-message {
+            display: none;
+            margin-top: 30px;
+            padding: 30px;
+            background: linear-gradient(135deg, #fff6f8 0%, #ffe8ee 100%);
+            border-radius: 15px;
+            animation: slideDown 0.5s ease;
+            border: 2px solid #ff6b9d;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-heart {
+            position: absolute;
+            font-size: 30px;
+            opacity: 0.3;
+            animation: float 10s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 20px 100px 20px;
+            color: white;
+            font-size: 1.1em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 40px 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .message {
+                font-size: 1.05em;
+            }
+
+            .content-section {
+                padding: 30px 20px;
+            }
+
+            .photo-gallery {
+                grid-template-columns: 1fr;
+            }
+
+            .music-player {
+                bottom: 20px;
+                right: 20px;
+                padding: 15px;
+                flex-direction: column;
+                border-radius: 20px;
+            }
+
+            .music-info {
+                display: none;
+            }
+
+            .volume-control {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            input[type="range"] {
+                width: 60px;
+            }
+        }
+
+        .emphasis {
+            color: #ff6b9d;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Welcome Overlay -->
+    <div class="welcome-overlay" id="welcomeOverlay">
+        <div class="welcome-box">
+            <div class="heart" style="font-size: 60px;">💕</div>
+            <h2>Welcome Love 💖</h2>
+            <p>I made something special for you.<br></p>
+            <button class="start-btn" onclick="startExperience()">Start 💖</button>
+        </div>
+    </div>
+
+    <!-- Background Music -->
+    <audio id="bgMusic" loop>
+        <source src="A Song for Heaven.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Music Player Controls -->
+    <div class="music-player" id="musicPlayer" style="display: none;">
+        <button class="play-pause-btn" id="playPauseBtn" onclick="toggleMusic()">
+            <span id="playIcon">▶️</span>
+        </button>
+        <div class="music-info">
+            <div class="music-title">Our Song </div>
+            <div class="music-status" id="musicStatus">Playing...</div>
+        </div>
+        <div class="volume-control">
+            <span class="volume-icon">🔊</span>
+            <input type="range" id="volumeSlider" min="0" max="100" value="50" onchange="changeVolume()">
+        </div>
+    </div>
+
+    <div class="floating-hearts" id="hearts"></div>
+
+    <div class="container">
+        <div class="header">
+            <div class="heart">💕</div>
+            <h1>Happy 20 Months!</h1>
+            <div class="subtitle">To My Beautiful Girlfriend Charms</div>
+            <div class="date">October 18, 2025</div>
+        </div>
+
+        <div class="content-section">
+            <div class="section-title">My Love Letter to You</div>
+
+            <div class="message">
+                My dearest love, I can't believe it's been 20 months since you came into my life and changed everything. Twenty months of laughter, tears, growth, and unconditional love. Twenty months of learning what it truly means to be with someone who makes every single day worth living.
+            </div>
+
+            <div class="message">
+                When I think about us, I think about all the little moments that make my heart full. The way you laugh at my terrible jokes, the way you look at me when you think I'm not watching, the sound of your voice when you call my name. Every single detail about you is etched into my heart, and I wouldn't change a single thing.
+            </div>
+
+            <div class="message-center">
+                "We're not perfect, but we're perfect for each other"
+            </div>
+
+            <div class="message">
+                I know we're not always easy. <span class="emphasis">We fight, we argue, we frustrate each other</span>—sometimes over the silliest things. There are moments when we both want to walk away, when the words hurt and the silence feels too heavy. But here's what I've learned about us: <span class="emphasis">we always find our way back to each other</span>. Every single time.
+            </div>
+
+            <div class="message">
+                That's what makes us special. We don't run away when things get hard. We don't give up when we're angry. Instead, we talk, we listen, we understand. We put our pride aside because what we have is so much bigger than any argument. You've taught me that real love isn't about never fighting—it's about always choosing each other, even when it's difficult. <span class="emphasis">Especially when it's difficult</span>.
+            </div>
+
+            <div class="message">
+                Every time we fix what's broken between us, we come back stronger. Every misunderstanding becomes a lesson. Every tear becomes a testament to how much we care. You've shown me that love is patient, love is forgiving, and love is worth fighting for. Our love is worth fighting for.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <div class="section-title">Our Beautiful Memories</div>
+            <div class="photo-gallery">
+                <div class="photo-frame">
+                    <img src="started.jpg" style="width:100%; height:300px; object-fit:cover; border-radius:5px;">
+                    <div class="photo-caption">Where it all began ❤️</div>
+                </div>
+
+                <div class="photo-frame">
+                    <img src="memries.jpg" style="width:100%; height:300px; object-fit:cover; border-radius:5px;">
+                    <div class="photo-caption">Making memories with you 💕</div>
+                </div>
+
+                <div class="photo-frame">
+                    <img src="fav.jpg" style="width:100%; height:300px; object-fit:cover; border-radius:5px;">
+                    <div class="photo-caption">Our favorite adventure 🌟</div>
+                </div>
+
+                <div class="photo-frame">
+                    <img src="mmhap.jpg" style="width:100%; height:300px; object-fit:cover; border-radius:5px;">
+                    <div class="photo-caption">You make me so happy 😊</div>
+                </div>
+
+                <div class="photo-frame">
+                    <img src="stillu.jpg" style="width:100%; height:300px; object-fit:cover; border-radius:5px;">
+                    <div class="photo-caption">Still falling for you 💖</div>
+                </div>
+
+                <div class="photo-frame">
+                    <img src="formy.jpg" style="width:100%; height:300px; object-fit:cover; border-radius:5px;">
+                    <div class="photo-caption">Forever my favorite person 💑</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <div class="section-title">What You Mean to Me</div>
+
+            <div class="message">
+                Baby, you are my safe place in a chaotic world. When everything feels overwhelming, when life gets too heavy, I know I can come to you. You're my best friend, my partner, my confidant, my everything. You see me at my worst and still choose to love me at my best. That kind of love is rare, and I cherish it every single day.
+            </div>
+
+            <div class="message">
+                Thank you for being patient with me. Thank you for understanding my flaws and loving me anyway. Thank you for every time you've forgiven me, every time you've held my hand through the hard times, every time you've smiled at me and made everything okay again. Thank you for showing me what real, honest, beautiful love looks like.
+            </div>
+
+            <div class="message">
+                These 20 months have been the best months of my life, and I can't wait for all the months and years to come. I want to experience everything with you—the good days, the challenging days, the ordinary days, and the extraordinary ones. I want to keep growing with you, learning with you, and building a life with you.
+            </div>
+
+            <div class="message-center">
+                "In a sea of people, my eyes will always search for you"
+            </div>
+
+            <div class="message">
+                You are my person. You are the one I want to call when something exciting happens. You are the one I want to hug when I'm sad. You are the one I want beside me through every moment. I love you more than words could ever express, and I promise to keep showing you every single day just how much you mean to me.
+            </div>
+
+            <div class="message">
+                Here's to 20 months down and a lifetime to go. Here's to all the fights we'll work through, all the laughs we'll share, all the memories we'll create, and all the love we'll continue to build together. I'm so grateful for you, for us, and for this beautiful journey we're on.
+            </div>
+
+            <div class="message">
+                I love you endlessly, completely, and unconditionally. Thank you for being mine.
+            </div>
+
+            <button class="button" onclick="revealMessage()">Click for a Special Message 💕</button>
+
+            <div class="hidden-message" id="hiddenMessage">
+                <h2 style="color: #c06c84; margin-bottom: 20px; text-align: center;">💕 Forever Yours 💕</h2>
+                <p style="font-size: 1.2em; color: #555; text-align: center; line-height: 1.8;">
+                    To my beautiful girlfriend on our 20-month anniversary:<br><br>
+                    You are my today and all of my tomorrows. Through every argument, every makeup, 
+                    every laugh, and every tear—my love for you only grows stronger.<br><br>
+                    <span style="color: #ff6b9d; font-weight: bold; font-size: 1.3em;">
+                    I choose you. Today, tomorrow, and forever. ❤️
+                    </span><br><br>
+                    Happy 20 Months, my love. Here's to infinity more.
+                </p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="heart" style="font-size: 50px; animation-duration: 1s;">💖</div>
+            <div style="margin-top: 20px; font-size: 1.3em;">Forever & Always</div>
+            <div style="margin-top: 10px; font-size: 1em;">ILOVEYOUUUUUU</div>
+        </div>
+    </div>
+
+    <script>
+        const bgMusic = document.getElementById('bgMusic');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const playIcon = document.getElementById('playIcon');
+        const musicStatus = document.getElementById('musicStatus');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const musicPlayer = document.getElementById('musicPlayer');
+
+        // Set initial volume
+        bgMusic.volume = 0.5;
+
+        // Start experience function
+        function startExperience() {
+            document.getElementById('welcomeOverlay').style.display = 'none';
+            musicPlayer.style.display = 'flex';
+
+            // Try to play music
+            bgMusic.play().then(() => {
+                playIcon.textContent = '⏸️';
+                musicStatus.textContent = 'Playing...';
+            }).catch(error => {
+                console.log('Autoplay prevented:', error);
+                playIcon.textContent = '▶️';
+                musicStatus.textContent = 'Click to play';
+            });
+        }
+
+        // Toggle music play/pause
+        function toggleMusic() {
+            if (bgMusic.paused) {
+                bgMusic.play();
+                playIcon.textContent = '⏸️';
+                musicStatus.textContent = 'Playing...';
+            } else {
+                bgMusic.pause();
+                playIcon.textContent = '▶️';
+                musicStatus.textContent = 'Paused';
+            }
+        }
+
+        // Change volume
+        function changeVolume() {
+            bgMusic.volume = volumeSlider.value / 100;
+        }
+
+        // Create floating hearts
+        function createHeart() {
+            const hearts = ['💕', '💖', '💗', '💝', '❤️'];
+            const heart = document.createElement('div');
+            heart.classList.add('floating-heart');
+            heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            heart.style.animationDelay = Math.random() * 5 + 's';
+            document.getElementById('hearts').appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 15000);
+        }
+
+        // Create hearts periodically
+        setInterval(createHeart, 1500);
+
+        // Reveal hidden message
+        function revealMessage() {
+            const message = document.getElementById('hiddenMessage');
+            message.style.display = 'block';
+
+            // Scroll smoothly to the message
+            message.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // Create confetti effect with hearts
+            for (let i = 0; i < 30; i++) {
+                setTimeout(createHeart, i * 80);
+            }
+        }
+
+        // Initialize some hearts
+        for (let i = 0; i < 8; i++) {
+            setTimeout(createHeart, i * 300);
+        }
+    </script>
+</body>
+</html>
