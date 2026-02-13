@@ -1238,28 +1238,50 @@
             display: none;
         }
 
-        .album-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+        /* Wrapper for scrolling */
+        .album-grid-wrapper {
             margin-top: 20px;
             max-height: 75vh;
             overflow-y: auto;
             padding: 4px;
             padding-right: 8px;
+            border-radius: 12px;
         }
 
-        .album-grid::-webkit-scrollbar { width: 6px; }
-        .album-grid::-webkit-scrollbar-track { background: #f9e8ee; border-radius: 6px; }
-        .album-grid::-webkit-scrollbar-thumb { background: #ffb3d1; border-radius: 6px; }
-        .album-grid::-webkit-scrollbar-thumb:hover { background: #ff6b9d; }
+        .album-grid-wrapper::-webkit-scrollbar { width: 6px; }
+        .album-grid-wrapper::-webkit-scrollbar-track { background: #f9e8ee; border-radius: 6px; }
+        .album-grid-wrapper::-webkit-scrollbar-thumb { background: #ffb3d1; border-radius: 6px; }
+        .album-grid-wrapper::-webkit-scrollbar-thumb:hover { background: #ff6b9d; }
+
+        .album-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 0; /* Margin handled by wrapper */
+        }
 
         @media (min-width: 768px) {
-            .album-grid { grid-template-columns: repeat(4, 1fr); }
+            .album-grid {
+                grid-template-columns: repeat(4, 1fr);
+                column-gap: 18px;
+                row-gap: 22px;
+            }
+            .album-grid-wrapper {
+                max-height: 70vh;
+            }
         }
 
         @media (min-width: 1024px) {
-            .album-grid { grid-template-columns: repeat(5, 1fr); }
+            .album-grid {
+                grid-template-columns: repeat(4, 1fr);
+                column-gap: 20px;
+                row-gap: 24px;
+                max-width: 1000px;
+                margin: 0 auto;
+            }
+            .album-grid-wrapper {
+                max-height: 550px;
+            }
         }
 
         /* Folder/Filter Tabs */
@@ -2180,7 +2202,9 @@
             <div class="section-title">Our Photo Album 📸</div>
             <input type="file" class="album-upload-input" id="albumFileInput" accept="image/*" multiple>
             <div class="album-filters" id="albumFilters"></div>
-            <div class="album-grid" id="albumGrid"></div>
+            <div class="album-grid-wrapper">
+                <div class="album-grid" id="albumGrid"></div>
+            </div>
             <div class="album-counter" id="albumCounter"></div>
             <div class="album-empty" id="albumEmpty">
                 <span>📷</span>
