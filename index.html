@@ -1238,6 +1238,78 @@
             display: none;
         }
 
+        /* ===== ACCORDION STYLES ===== */
+        .accordion-section {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            margin-bottom: 25px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .accordion-header {
+            background: linear-gradient(135deg, #fff6f8 0%, #ffe8ee 100%);
+            padding: 25px 40px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .accordion-header:hover {
+            background: linear-gradient(135deg, #ffe8ee 0%, #ffd9e2 100%);
+        }
+
+        .accordion-title {
+            font-size: 2em;
+            color: #ff6b9d;
+            text-shadow: 2px 2px 4px rgba(255, 107, 157, 0.1);
+            margin: 0;
+        }
+
+        .accordion-arrow {
+            font-size: 1.5em;
+            transition: transform 0.3s ease;
+            color: #ff6b9d;
+        }
+
+        .accordion-section.active .accordion-arrow {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, padding 0.5s ease;
+            padding: 0 40px;
+        }
+
+        .accordion-section.active .accordion-content {
+            max-height: 5000px;
+            padding: 30px 40px;
+        }
+
+        @media (max-width: 600px) {
+            .accordion-header {
+                padding: 20px 25px;
+            }
+            .accordion-title {
+                font-size: 1.5em;
+            }
+            .accordion-arrow {
+                font-size: 1.2em;
+            }
+            .accordion-content,
+            .accordion-section.active .accordion-content {
+                padding-left: 25px;
+                padding-right: 25px;
+            }
+        }
+
+
         /* Wrapper for scrolling */
         .album-grid-wrapper {
             margin-top: 20px;
@@ -2087,37 +2159,45 @@
             </div>
         </div>
 
-        <div class="content-section scroll-reveal">
-            <div class="section-title">My Love Letter to You</div>
-
-            <div class="message scroll-reveal">
-                My dearest love, I can't believe it's been 20 months since you came into my life and changed everything. Twenty months of laughter, tears, growth, and unconditional love. Twenty months of learning what it truly means to be with someone who makes every single day worth living.
+        <div class="accordion-section scroll-reveal" id="loveLetterSection">
+            <div class="accordion-header" onclick="toggleAccordion('loveLetterSection')">
+                <div class="accordion-title">My Love Letter to You</div>
+                <div class="accordion-arrow">▼</div>
             </div>
+            <div class="accordion-content">
+                <div class="message scroll-reveal">
+                    My dearest love, I can't believe it's been 20 months since you came into my life and changed everything. Twenty months of laughter, tears, growth, and unconditional love. Twenty months of learning what it truly means to be with someone who makes every single day worth living.
+                </div>
 
-            <div class="message scroll-reveal">
-                When I think about us, I think about all the little moments that make my heart full. The way you laugh at my terrible jokes, the way you look at me when you think I'm not watching, the sound of your voice when you call my name. Every single detail about you is etched into my heart, and I wouldn't change a single thing.
-            </div>
+                <div class="message scroll-reveal">
+                    When I think about us, I think about all the little moments that make my heart full. The way you laugh at my terrible jokes, the way you look at me when you think I'm not watching, the sound of your voice when you call my name. Every single detail about you is etched into my heart, and I wouldn't change a single thing.
+                </div>
 
-            <div class="message-center scroll-reveal">
-                "We're not perfect, but we're perfect for each other"
-            </div>
+                <div class="message-center scroll-reveal">
+                    "We're not perfect, but we're perfect for each other"
+                </div>
 
-            <div class="message scroll-reveal">
-                I know we're not always easy. <span class="emphasis">We fight, we argue, we frustrate each other</span>—sometimes over the silliest things. There are moments when we both want to walk away, when the words hurt and the silence feels too heavy. But here's what I've learned about us: <span class="emphasis">we always find our way back to each other</span>. Every single time.
-            </div>
+                <div class="message scroll-reveal">
+                    I know we're not always easy. <span class="emphasis">We fight, we argue, we frustrate each other</span>—sometimes over the silliest things. There are moments when we both want to walk away, when the words hurt and the silence feels too heavy. But here's what I've learned about us: <span class="emphasis">we always find our way back to each other</span>. Every single time.
+                </div>
 
-            <div class="message scroll-reveal">
-                That's what makes us special. We don't run away when things get hard. We don't give up when we're angry. Instead, we talk, we listen, we understand. We put our pride aside because what we have is so much bigger than any argument. You've taught me that real love isn't about never fighting—it's about always choosing each other, even when it's difficult. <span class="emphasis">Especially when it's difficult</span>.
-            </div>
+                <div class="message scroll-reveal">
+                    That's what makes us special. We don't run away when things get hard. We don't give up when we're angry. Instead, we talk, we listen, we understand. We put our pride aside because what we have is so much bigger than any argument. You've taught me that real love isn't about never fighting—it's about always choosing each other, even when it's difficult. <span class="emphasis">Especially when it's difficult</span>.
+                </div>
 
-            <div class="message scroll-reveal">
-                Every time we fix what's broken between us, we come back stronger. Every misunderstanding becomes a lesson. Every tear becomes a testament to how much we care. You've shown me that love is patient, love is forgiving, and love is worth fighting for. Our love is worth fighting for.
+                <div class="message scroll-reveal">
+                    Every time we fix what's broken between us, we come back stronger. Every misunderstanding becomes a lesson. Every tear becomes a testament to how much we care. You've shown me that love is patient, love is forgiving, and love is worth fighting for. Our love is worth fighting for.
+                </div>
             </div>
         </div>
 
-        <div class="content-section scroll-reveal">
-            <div class="section-title">Our Beautiful Memories</div>
-            <div class="photo-gallery">
+        <div class="accordion-section scroll-reveal" id="memoriesSection">
+            <div class="accordion-header" onclick="toggleAccordion('memoriesSection')">
+                <div class="accordion-title">Our Beautiful Memories</div>
+                <div class="accordion-arrow">▼</div>
+            </div>
+            <div class="accordion-content">
+                <div class="photo-gallery">
                 <div class="photo-frame scroll-reveal-left">
                     <img src="started.jpg">
                     <div class="photo-caption">Where it all began ❤️</div>
@@ -2148,10 +2228,15 @@
                     <div class="photo-caption">Forever my favorite person 💑</div>
                 </div>
             </div>
+            </div>
         </div>
 
-        <div class="content-section scroll-reveal">
-            <div class="section-title">What You Mean to Me</div>
+        <div class="accordion-section scroll-reveal" id="meaningSection">
+            <div class="accordion-header" onclick="toggleAccordion('meaningSection')">
+                <div class="accordion-title">What You Mean to Me</div>
+                <div class="accordion-arrow">▼</div>
+            </div>
+            <div class="accordion-content">
 
             <div class="message scroll-reveal">
                 Baby, you are my safe place in a chaotic world. When everything feels overwhelming, when life gets too heavy, I know I can come to you. You're my best friend, my partner, my confidant, my everything. You see me at my worst and still choose to love me at my best. That kind of love is rare, and I cherish it every single day.
@@ -2194,6 +2279,7 @@
                     </span><br><br>
                     Happy 20 Months, my love. Here's to infinity more.
                 </p>
+            </div>
             </div>
         </div>
 
@@ -2523,6 +2609,12 @@
 
         for (let i = 0; i < 8; i++) {
             setTimeout(createHeart, i * 300);
+        }
+
+        // ===== ACCORDION TOGGLE =====
+        function toggleAccordion(sectionId) {
+            const section = document.getElementById(sectionId);
+            section.classList.toggle('active');
         }
 
         // ===== PASSWORD GATE =====
