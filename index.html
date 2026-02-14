@@ -2663,35 +2663,14 @@
 
         async function saveAlbumToCloud() {
             try {
-                // 1. Fetch the latest data from cloud first
-                const res = await fetch(NPOINT_URL + '?t=' + Date.now(), { cache: "no-store" });
-                let cloudPhotos = [];
-                if (res.ok) {
-                    const data = await res.json();
-                    cloudPhotos = Array.isArray(data) ? data : (data.photos || []);
-                }
-
-                // 2. Merge: use URL as unique key
-                const mergedMap = new Map();
-                // Add cloud photos first
-                cloudPhotos.forEach(p => { if (p.url) mergedMap.set(p.url, p); });
-                // Local photos override cloud (they have latest edits like favorites, comments, folder)
-                albumPhotos.forEach(p => { if (p.url) mergedMap.set(p.url, p); });
-
-                // 3. Update local array with merged result
-                albumPhotos = Array.from(mergedMap.values());
+                // Save current local state directly to cloud (local is source of truth)
                 localStorage.setItem('motmot_album_cloud', JSON.stringify(albumPhotos));
-
-                // 4. Save merged data to cloud
+                
                 await fetch(NPOINT_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(albumPhotos)
                 });
-
-                // 5. Re-render with merged data
-                renderFilters();
-                renderAlbum();
             } catch (err) {
                 console.error('Failed to sync album to cloud:', err);
                 // Still save locally as fallback
@@ -3023,12 +3002,19 @@
 
         // --- Delete photo ---
         async function deletePhoto(index) {
-            if (confirm('Remove this photo from the album?')) {
-                albumPhotos.splice(index, 1);
-                renderFilters();
-                renderAlbum();
-                await saveAlbumToCloud();
-            }
+            const confirmed = await showModal({
+                title: '🗑️ Delete Photo',
+                message: 'Remove this photo from the album? This cannot be undone.',
+                showInput: false,
+                confirmText: 'Delete',
+                confirmClass: 'danger'
+            });
+            if (!confirmed) return;
+            
+            albumPhotos.splice(index, 1);
+            renderFilters();
+            renderAlbum();
+            await saveAlbumToCloud();
         }
 
         // --- Enhanced Lightbox ---
@@ -3202,20 +3188,18 @@
         // --- Load album from cloud on page load ---
         loadAlbumFromCloud();
 
-        // --- Auto-sync: poll for new photos every 15 seconds ---
+        // --- Auto-sync: poll for changes every 15 seconds ---
         setInterval(async () => {
             try {
                 const res = await fetch(NPOINT_URL + '?t=' + Date.now(), { cache: "no-store" });
                 if (!res.ok) return;
                 const data = await res.json();
                 const cloudPhotos = Array.isArray(data) ? data : (data.photos || []);
+                
                 // Only update if photo count changed (new photos added or removed)
                 if (cloudPhotos.length !== albumPhotos.length) {
-                    // Merge: keep local edits, add new cloud photos
-                    const mergedMap = new Map();
-                    albumPhotos.forEach(p => { if (p.url) mergedMap.set(p.url, p); });
-                    cloudPhotos.forEach(p => { if (p.url && !mergedMap.has(p.url)) mergedMap.set(p.url, p); });
-                    albumPhotos = Array.from(mergedMap.values());
+                    // Cloud is source of truth - just load it directly
+                    albumPhotos = cloudPhotos;
                     localStorage.setItem('motmot_album_cloud', JSON.stringify(albumPhotos));
                     renderFilters();
                     renderAlbum();
