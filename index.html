@@ -2612,33 +2612,53 @@
 
         // --- Sync with npoint.io (shared online storage) ---
         async function loadAlbumFromCloud() {
+            // Get local cache first
+            let localPhotos = JSON.parse(localStorage.getItem('motmot_album_cloud') || '[]');
+
             try {
-                // Add timestamp to prevent caching
+                // Fetch from cloud (no cache)
                 const res = await fetch(NPOINT_URL + '?t=' + Date.now(), { cache: "no-store" });
                 const data = await res.json();
-                albumPhotos = Array.isArray(data) ? data : (data.photos || []);
-                // Migrate old format: if photo is just a string URL, convert to object
-                albumPhotos = albumPhotos.map(p => {
-                    if (typeof p === 'string') return { url: p, comments: [], folder: 'All', favorite: false, date: new Date().toISOString() };
-                    // Migrate old caption to comments
-                    if (p.caption && (!p.comments || p.comments.length === 0)) {
-                        p.comments = [{ text: p.caption, time: p.date || new Date().toISOString() }];
-                        delete p.caption;
-                    }
-                    p.comments = p.comments || [];
-                    p.folder = p.folder || 'All';
-                    p.favorite = p.favorite || false;
-                    p.date = p.date || new Date().toISOString();
-                    return p;
-                });
-                renderFilters();
-                renderAlbum();
+                let cloudPhotos = Array.isArray(data) ? data : (data.photos || []);
+
+                // Merge cloud + local using URL as unique key
+                const mergedMap = new Map();
+                cloudPhotos.forEach(p => { if (p && p.url) mergedMap.set(p.url, p); });
+                localPhotos.forEach(p => { if (p && p.url && !mergedMap.has(p.url)) mergedMap.set(p.url, p); });
+
+                albumPhotos = Array.from(mergedMap.values());
             } catch (err) {
-                console.warn('Could not load album from cloud, using local cache.', err);
-                albumPhotos = JSON.parse(localStorage.getItem('motmot_album_cloud') || '[]');
-                renderFilters();
-                renderAlbum();
+                console.warn('Could not load from cloud, using local cache.', err);
+                albumPhotos = localPhotos;
             }
+
+            // Migrate old formats
+            albumPhotos = albumPhotos.map(p => {
+                if (typeof p === 'string') return { url: p, comments: [], folder: 'All', favorite: false, date: new Date().toISOString() };
+                if (p.caption && (!p.comments || p.comments.length === 0)) {
+                    p.comments = [{ text: p.caption, time: p.date || new Date().toISOString() }];
+                    delete p.caption;
+                }
+                p.comments = p.comments || [];
+                p.folder = p.folder || 'All';
+                p.favorite = p.favorite || false;
+                p.date = p.date || new Date().toISOString();
+                return p;
+            });
+
+            // Save merged result back to both cloud and local
+            localStorage.setItem('motmot_album_cloud', JSON.stringify(albumPhotos));
+            renderFilters();
+            renderAlbum();
+
+            // Auto-push merged data to cloud (catches any localStorage-only photos)
+            try {
+                await fetch(NPOINT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(albumPhotos)
+                });
+            } catch (e) { /* silent */ }
         }
 
         async function saveAlbumToCloud() {
